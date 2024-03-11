@@ -23,34 +23,22 @@ locals {
   env = "dev"
 }
 
-data "aws_ami" "ubuntu_ami" {
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["Ubuntu Server 22.04 LTS*"]
-  }
+data "aws_ami" "ubuntu" {
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+    most_recent = true
 
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    }
 
-  filter {
-    name   = "architecture"
-    values = ["x86_64"]
-  }
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
 
-  filter {
-    name   = "ena-support"
-    values = ["true"]
-  }
+    owners = ["099720109477"]
 }
-
 data "http" "myip" {
   url = "https://ipv4.icanhazip.com"
 }
@@ -69,8 +57,8 @@ module "instance" {
   source  = "app.terraform.io/Jainil-Org/instance/aws"
   version = "1.0.3"
   env     = local.env
-  // ami_id             = data.aws_ami.ubuntu_ami.id
-  ami_id             = "ami-03bb6d83c60fc5f7c"
+  ami_id             = data.aws_ami.ubuntu_ami.id
+  # ami_id             = "ami-03bb6d83c60fc5f7c"
   instance_type      = "t2.micro"
   private_subnet_ids = module.vpc.private_subnet_ids
   public_subnet_ids  = module.vpc.public_subnet_ids

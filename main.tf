@@ -25,7 +25,7 @@ locals {
 
 data "aws_ami" "ubuntu" {
 
-  most_recent = true
+  most_recent = false
 
   filter {
     name   = "name"
@@ -58,7 +58,6 @@ module "instance" {
   version = "1.0.3"
   env     = local.env
   ami_id  = data.aws_ami.ubuntu.id
-  # ami_id             = "ami-03bb6d83c60fc5f7c"
   instance_type      = "t2.micro"
   private_subnet_ids = module.vpc.private_subnet_ids
   public_subnet_ids  = module.vpc.public_subnet_ids

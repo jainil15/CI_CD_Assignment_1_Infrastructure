@@ -25,7 +25,7 @@ locals {
 
 data "aws_ami" "ubuntu" {
 
-  most_recent = false
+  most_recent = true
 
   filter {
     name   = "name"
